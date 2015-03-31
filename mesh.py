@@ -149,17 +149,26 @@ if __name__ == '__main__':
     # interior boundary
     xin = cos(theta) * rin
     yin = sin(theta) * rin
-    xin = hstack( [linspace(-.5, -.1, 5), xin, linspace(-.1, -1., 10)] )
-    yin = hstack( [ones(5), yin, -ones(10)] )
+    xin = hstack( [linspace(-.5, -.1, 5), xin, linspace(-.1, -1., 10), -1.-logspace(.1, 1., 5)/10.] )
+    yin = hstack( [ones(5), yin, -ones(10), -ones(5)] )
     
     # exterior boundary
     xout = cos(theta) * rout
     yout = sin(theta) * rout
-    xout = hstack( [linspace(-.5, -.1, 5), xout, linspace(-.1, -1., 10)] )
-    yout = hstack( [2*ones(5), yout, -2*ones(10)] )
+    xout = hstack( [linspace(-.5, -.1, 5), xout, linspace(-.1, -1., 10), -1.-logspace(.1, 1., 5)/10.] )
+    yout = hstack( [2*ones(5), yout, -2*ones(10), -2*ones(5)] )
     
     # layer parameterization, # of layers == layer.size-1
+    ratio = logspace(.1,.5,10)
+    layer_in = (ratio - ratio.min()) / (ratio.max() - ratio.min()) * .5
+    layer_out = -layer_in[:-1][::-1] + 1.
+    layer = hstack([layer_in, layer_out])[::-1]
+    grid = array( ones(layer.size-1) ,dtype=int)
+
+    """
+    layer = [logspace(1,.5,10), logspace(.1,.5,10)[::-1]
     layer = array([1., 0.9, 0.7, 0.3, 0.1, 0.])    # layer must start with 1 and end with 0
     grid = array([5, 3, 3, 3, 5], dtype=int)    # discretization for each layer
-    
+    """
+
     Xg, Yg = genMesh(xin, yin, xout, yout, layer, grid)
