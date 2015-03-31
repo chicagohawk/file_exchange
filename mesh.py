@@ -66,6 +66,7 @@ def genMesh(xin, yin, xout, yout, layer, grid):
     pattern = '_VERTEX_'
     fstr = re.sub(pattern, vertex_str, fstr)
     
+    # ======== BLOCKS ========
     endv = (xin.size-1)*2*layer.size    # first vertex of last slice
     # blocks by slice
     # simpleGrading depends on jj
